@@ -108,20 +108,24 @@ public class MyServer {
             }
           } else if (line.equals("sendmsg")) {
             if (username != null) {
-              out.println(ANSI_GREEN + "Please enter the recipient's username:" + RESET);
-              String recipient = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the message title:" + RESET);
-              String title = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the message body:" + RESET);
-              String message = in.readLine();
-              Message msg = new Message(-1, username, recipient, title, message, Date.from(java.time.Instant.now()));
+              String[] msglst = in.readLine().split("%", 0);
+              Message msg = new Message(-1, username, msglst[0], msglst[1], msglst[2],
+                  Date.from(java.time.Instant.now()));
               if (datab.saveMessage(msg)) {
                 out.println(ANSI_GREEN + "Message sent" + RESET);
               } else {
-                out.println(ANSI_GREEN + "Username not found" + RESET);
+                if (!datab.userExists(username)) {
+                  out.println(ANSI_GREEN + "ERR%User does not exist" + RESET);
+                  username = null;
+                  isAdmin = false;
+                } else if (!datab.userExists(msglst[0])) {
+                  out.println(ANSI_GREEN + "ERR%Recipient does not exist" + RESET);
+                } else {
+                  out.println(ANSI_GREEN + "ERR%Message failed to send" + RESET);
+                }
               }
             } else {
-              out.println(ANSI_GREEN + ANSI_GREEN + "You must be logged in to send a message" + RESET);
+              out.println(ANSI_GREEN + ANSI_GREEN + "ERR%You must be logged in to send a message" + RESET);
             }
           } else if (line.equals("inbox")) {
             if (username != null) {
@@ -149,20 +153,25 @@ public class MyServer {
                   i++;
                 }
                 for (String[] row : stringTable) {
-                  finalstr.append(ANSI_GREEN + "ID:" + row[0] + "%");
-                  finalstr.append("Date:" + row[1] + "%");
-                  finalstr.append("Sender:" + row[2] + "%");
-                  finalstr.append("Title:" + row[3] + "%");
-                  finalstr.append("Message:" + row[4] + "%");
-                  finalstr.append("********************************%" + RESET);
+                  finalstr.append(row[0] + "%");
+                  finalstr.append(row[1] + "%");
+                  finalstr.append(row[2] + "%");
+                  finalstr.append(row[3] + "%");
+                  finalstr.append(row[4] + "%%");
                 }
                 out.println(finalstr.toString());
               } catch (Exception e) {
-                out.println(ANSI_GREEN + "Error while viewing inbox" + RESET);
+                if (!datab.userExists(username)) {
+                  out.println(ANSI_GREEN + "ERR%User does not exist" + RESET);
+                  username = null;
+                  isAdmin = false;
+                } else {
+                  out.println(ANSI_GREEN + "ERR%Error while viewing inbox" + RESET);
+                }
               }
             } else {
               out.println(ANSI_GREEN +
-                  "You must be logged in to view your inbox" + RESET);
+                  "ERR%You must be logged in to view your inbox" + RESET);
             }
           } else if (line.equals("outbox")) {
             if (username != null) {
@@ -190,42 +199,32 @@ public class MyServer {
                   i++;
                 }
                 for (String[] row : stringTable) {
-                  finalstr.append(ANSI_GREEN + "ID:" + row[0] + "%");
-                  finalstr.append("Date:" + row[1] + "%");
-                  finalstr.append("Sender:" + row[2] + "%");
-                  finalstr.append("Title:" + row[3] + "%");
-                  finalstr.append("Message:" + row[4] + "%");
-                  finalstr.append("********************************%" + RESET);
+                  finalstr.append(row[0] + "%");
+                  finalstr.append(row[1] + "%");
+                  finalstr.append(row[2] + "%");
+                  finalstr.append(row[3] + "%");
+                  finalstr.append(row[4] + "%%");
                 }
                 out.println(finalstr.toString());
               } catch (Exception e) {
-                out.println(ANSI_GREEN + "Error while viewing outbox" + RESET);
+                if (!datab.userExists(username)) {
+                  out.println(ANSI_GREEN + "ERR%User does not exist" + RESET);
+                  username = null;
+                  isAdmin = false;
+                } else {
+                  out.println(ANSI_GREEN + "ERR%Error while viewing outbox" + RESET);
+                }
               }
             } else {
               out.println(ANSI_GREEN +
-                  "You must be logged in to view your outbox" + RESET);
+                  "ERR%You must be logged in to view your outbox" + RESET);
             }
           } else if (line.equals("adduser")) {
             if (isAdmin) {
               SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-              out.println(ANSI_GREEN + "Please enter the user's username:" + RESET);
-              String temp_username = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's password:" + RESET);
-              String temp_password = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's first name:" + RESET);
-              String temp_firstName = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's last name:" + RESET);
-              String temp_lastName = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's gender:" + RESET);
-              String temp_gender = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's email:" + RESET);
-              String temp_email = in.readLine();
-              out.println(ANSI_GREEN + "Please enter whether the user is an admin(true-false):" + RESET);
-              String temp_isAdmin = in.readLine();
-              out.println(ANSI_GREEN + "Please enter users birthday in yyyy-mm-dd format:" + RESET);
-              Date date = dateFormat.parse(in.readLine());
-              User user = new User(temp_username, temp_password, temp_firstName, temp_lastName, temp_gender, temp_email,
-                  Boolean.parseBoolean(temp_isAdmin), date);
+              String[] userlst = in.readLine().split("%", 0);
+              User user = new User(userlst[0], userlst[1], userlst[2], userlst[3], userlst[4], userlst[5],
+                  Boolean.parseBoolean(userlst[6]), dateFormat.parse(userlst[7]));
               if (datab.addUser(user)) {
                 out.println(ANSI_GREEN + "User added" + RESET);
               } else {
@@ -237,24 +236,9 @@ public class MyServer {
           } else if (line.equals("updateuser")) {
             if (isAdmin) {
               SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-              out.println(ANSI_GREEN + "Please enter the username of user you want to update:" + RESET);
-              String temp_username = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's password:" + RESET);
-              String temp_password = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's first name:" + RESET);
-              String temp_firstName = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's last name:" + RESET);
-              String temp_lastName = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's gender:" + RESET);
-              String temp_gender = in.readLine();
-              out.println(ANSI_GREEN + "Please enter the user's email:" + RESET);
-              String temp_email = in.readLine();
-              out.println(ANSI_GREEN + "Please enter whether the user is an admin(true-false):" + RESET);
-              String temp_isAdmin = in.readLine();
-              out.println(ANSI_GREEN + "Please enter users birthday in yyyy-mm-dd format:" + RESET);
-              Date date = dateFormat.parse(in.readLine());
-              User user = new User(temp_username, temp_password, temp_firstName, temp_lastName, temp_gender, temp_email,
-                  Boolean.parseBoolean(temp_isAdmin), date);
+              String[] userlst = in.readLine().split("%", 0);
+              User user = new User(userlst[0], userlst[1], userlst[2], userlst[3], userlst[4], userlst[5],
+                  Boolean.parseBoolean(userlst[6]), dateFormat.parse(userlst[7]));
               if (datab.updateUser(user)) {
                 out.println(ANSI_GREEN + "User updated" + RESET);
               } else {
@@ -295,7 +279,13 @@ public class MyServer {
                 }
                 out.println(finalstr.toString());
               } catch (Exception e) {
-                out.println(ANSI_GREEN + "Error while viewing users" + RESET);
+                if (!datab.userExists(username)) {
+                  out.println(ANSI_GREEN + "User does not exist" + RESET);
+                  username = null;
+                  isAdmin = false;
+                } else {
+                  out.println(ANSI_GREEN + "Error while viewing users" + RESET);
+                }
               }
             } else {
               out.println(ANSI_GREEN + "You must be an admin to view users" + RESET);
@@ -303,13 +293,13 @@ public class MyServer {
           } else if (line.equals("help")) {
             if (isAdmin) {
               out.println(ANSI_GREEN +
-                  "Commands: \n LOGIN username password \n LOGOUT \n SENDMSG receiver_username title msg \n INBOX \n OUTBOX \n ADDUSER username password "
+                  "Commands: % LOGIN username password % LOGOUT % SENDMSG receiver_username title msg % INBOX % OUTBOX % ADDUSER username password "
                   +
-                  "name surname gender email isAdmin \n UPDATEUSER username password name surname gender email isAdmin \n REMOVEUSER username \n LISTUSERS \n HELP"
+                  "name surname gender email isAdmin % UPDATEUSER username password name surname gender email isAdmin % REMOVEUSER username % LISTUSERS % HELP"
                   + RESET);
             } else {
               out.println(ANSI_GREEN +
-                  "Commands: \n LOGIN username password\n LOGOUT \n, SENDMSG receiver_username title msg \n INBOX \n OUTBOX \n HELP"
+                  "Commands: % LOGIN username password % LOGOUT % SENDMSG receiver_username title msg % INBOX % OUTBOX % HELP % DELETEMSG "
                   + RESET);
             }
           } else if (line.equals("deletemsg")) {
@@ -323,9 +313,10 @@ public class MyServer {
                 out.println(ANSI_GREEN + "Error while deleting message" + RESET);
               }
             } else {
-              out.println(ANSI_GREEN +
-                  "You must be logged in to delete a message" + RESET);
+              out.println(ANSI_GREEN + "You must be logged in to delete a message" + RESET);
             }
+          } else {
+            out.println(ANSI_GREEN + "Invalid command" + RESET);
           }
         }
       } catch (Exception e) {

@@ -26,8 +26,10 @@ public class Database {
       stmt.setString(2, password);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
+        stmt.close();
         return true;
       } else {
+        stmt.close();
         return false;
       }
     } catch (SQLException e) {
@@ -43,8 +45,10 @@ public class Database {
       stmt.setString(1, username);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
+        stmt.close();
         return true;
       } else {
+        stmt.close();
         return false;
       }
     } catch (SQLException e) {
@@ -62,6 +66,7 @@ public class Database {
       stmt.setString(3, msg.getTitle());
       stmt.setString(4, msg.getMessage());
       stmt.executeUpdate();
+      stmt.close();
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -83,6 +88,7 @@ public class Database {
             rs.getString("message"), rs.getDate("date"));
         i++;
       }
+      stmt.close();
       return messages;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -104,6 +110,7 @@ public class Database {
             rs.getString("message"), rs.getDate("date"));
         i++;
       }
+      stmt.close();
       return messages;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -125,8 +132,10 @@ public class Database {
       stmt.setBoolean(7, user.getIsAdmin());
       stmt.setDate(8, sqlDate);
       stmt.executeUpdate();
+      stmt.close();
       return true;
     } catch (SQLException e) {
+      /* if(e == ) */
       e.printStackTrace();
       return false;
     }
@@ -144,6 +153,7 @@ public class Database {
       stmt.setString(5, user.getEmail());
       stmt.setBoolean(6, user.getIsAdmin());
       stmt.executeUpdate();
+      stmt.close();
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -154,9 +164,10 @@ public class Database {
   public boolean removeUser(String username) {
     String QUERY3 = "DELETE FROM users WHERE username = ?";
     try {
-      PreparedStatement stmt3 = conn.prepareStatement(QUERY3);
-      stmt3.setString(1, username);
-      stmt3.executeUpdate();
+      PreparedStatement stmt = conn.prepareStatement(QUERY3);
+      stmt.setString(1, username);
+      stmt.executeUpdate();
+      stmt.close();
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -177,6 +188,7 @@ public class Database {
             rs.getDate("birthday"));
         i++;
       }
+      stmt.close();
       return users;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -198,8 +210,29 @@ public class Database {
       value1 = stmt.executeUpdate();
       value2 = stmt2.executeUpdate();
       if (value1 + value2 > 0) {
+        stmt.close();
         return true;
       } else {
+        stmt.close();
+        return false;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean userExists(String username) {
+    String QUERY = "SELECT * FROM users WHERE username = ?";
+    try {
+      PreparedStatement stmt = conn.prepareStatement(QUERY);
+      stmt.setString(1, username);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        stmt.close();
+        return true;
+      } else {
+        stmt.close();
         return false;
       }
     } catch (SQLException e) {
