@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header bg-primary text-white">User List</div>
+      <div class="card-body">
+        <div class="search-container">
+          <input type="text" placeholder="Search" [(ngModel)]="searchTerm" class="form-control" (input)="searchUsers()">
+        </div>
+        <div class="sort-container mt-3">
+          <label for="sortOption" class="form-label">Sort By:</label>
+          <select id="sortOption" [(ngModel)]="sortOption" (change)="sortUsers()" class="form-select">
+            <option value="">None</option>
+            <option value="username">Username</option>
+            <option value="name">Name</option>
+            <option value="surname">Surname</option>
+            <option value="birthday">Birthday</option>
+          </select>
+        </div>
+        <div class="user-list mt-4">
+          <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+                <th>Admin</th>
+                <th>Birthday</th>
+                <th></th> <!-- Empty header for buttons -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of pagedUsers">
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
+                <td>{{ user.Birthday | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                  <button (click)="deleteUser(user._id)" class="btn btn-sm btn-danger" type="button">Delete</button>
+                  <button (click)="updateUser(user.username)" class="btn btn-sm btn-primary" type="button">Update</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-container">
+          <button class="btn btn-sm btn-primary" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+          <button class="btn btn-sm btn-primary" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

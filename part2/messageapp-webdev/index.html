@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="script.js"></script>
+  <script type="module">
+    import { deletemsg } from "./script.js";
+    window.deletemsg = deletemsg;
+  </script>
+  <title>Message App</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Message App</h1>
+  <div id="login">
+    <input type="text" id="self-username-input" placeholder="Enter your username">
+    <input type="text" id="self-password-input" placeholder="Enter your password">
+    <button id="login-button">Login</button>
+    <div id="login-error"></div>
+  </div>
+  <div id="loggedin">
+  </div>
+  <div id="logout">
+    <button id="logout-button">Logout</button>
+  </div>
+  <div id="options">
+    <form>
+      <select id="select">
+      </select>
+    </form>
+    <span id="test">
+  </span>
+    <button id="send-button">Send</button>
+  </div> 
+<span id="result">
+  <div id="success"></div>
+</span>
+
+</body>
+
+
+</html>

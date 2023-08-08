@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+  <div class="col-md-4 register-employee">
+    <div class="card-body">
+      <form [formGroup]="sendMsgForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="inputReceiver">Receiver Username</label>
+          <input class="form-control" type="text" formControlName="receiver" [(ngModel)]="searchTerm" (input)="filterOptions()"/>
+          <ul *ngIf="filteredreceivers.length > 0 && searchTerm.length > 2" class="list-group mt-2">
+            <li *ngFor="let option of filteredreceivers" (click)="onSelect(option)" class="list-group-item list-group-item-action">
+              {{ option }}
+            </li>
+          </ul>
+          <div
+            class="text-danger"
+            *ngIf="submitted && sendMsgForm.controls['receiver'].errors?.['required']"
+          >
+            Receiver Username is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputTitle">Title</label>
+          <input class="form-control" type="text" formControlName="title" />
+          <div
+            class="text-danger"
+            *ngIf="submitted && sendMsgForm.controls['title'].errors?.['required']"
+          >
+            Title is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputMessage">Message</label>
+          <textarea class="form-control" formControlName="message"></textarea>
+          <div
+            class="text-danger"
+            *ngIf="submitted && sendMsgForm.controls['message'].errors?.['required']"
+          >
+            Message is required.
+          </div>
+        </div>
+        <div class="d-grid">
+          <button class="btn btn-primary btn-block" type="submit">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="alert alert-success" *ngIf="showConfirmation">
+    {{ confirmationMessage }}
+  </div>
+</div>

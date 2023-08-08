@@ -1,0 +1,17 @@
+functions to implement: LOGIN, LOGOUT, *INBOX, *OUTBOX, *SENDMSG, *ADDUSER, *UPDATEUSER, *REMOVEUSER, LISTUSERS, DELETEMSG
+
+gender dropdown
+
+password hashlenip gidecek??
+
+sortun ismini değiştir
+
+log view
+
+sildiğin user 404 alıyor 401 yerine
+
+pagenumber float olmasın
+
+listusers paging
+
+onay mesajları

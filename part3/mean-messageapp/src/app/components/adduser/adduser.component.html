@@ -1,0 +1,106 @@
+<div class="row justify-content-center">
+  <div class="col-md-4 register-employee">
+    <div class="mb-3">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" [class.active]="isUpdateMode" (click)="toggleAddUser(true)">Update</button>
+        <button type="button" class="btn btn-primary" [class.active]="!isUpdateMode" (click)="toggleAddUser(false)">Add</button>
+      </div>
+      <button class="btn btn-primary" *ngIf="isUpdateMode" (click)="fetchUserByUsername()">
+        Fetch User Details
+      </button>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="adduserForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="inputUsername">Username</label>
+          <div class="input-group">
+            <input class="form-control" type="text" formControlName="username" />
+            <div
+              class="text-danger"
+              *ngIf="submitted && adduserForm.controls['username'].errors?.['required']"
+            >
+              Username is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputPassword">Password</label>
+          <input class="form-control" type="password" formControlName="password" />
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['password'].errors?.['required']"
+          >
+            Password is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputName">Name</label>
+          <input class="form-control" type="text" formControlName="name" />
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['name'].errors?.['required']"
+          >
+            Name is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputSurname">Surname</label>
+          <input class="form-control" type="text" formControlName="surname" />
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['surname'].errors?.['required']"
+          >
+            Surname is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputGender">Gender</label>
+          <select class="form-control" formControlName="gender">
+            <option value="">Choose...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['gender'].errors?.['required']"
+          >
+            Gender is required.
+          </div>
+        </div>        
+        <div class="mb-3">
+          <label for="inputIsAdmin">Is Admin</label>
+          <select class="form-control" formControlName="isAdmin">
+            <option value="">Choose...</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['isAdmin'].errors?.['required']"
+          >
+            Is Admin is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="inputBirthday">Birthday</label>
+          <input class="form-control" type="date" formControlName="Birthday" />
+          <div
+            class="text-danger"
+            *ngIf="submitted && adduserForm.controls['Birthday'].errors?.['required']"
+          >
+            Birthday is required.
+          </div>
+        </div>
+        <div class="d-grid">
+          <button class="btn btn-primary btn-block" type="submit">
+            {{ isUpdateMode ? 'Update' : 'Register' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="alert alert-success" *ngIf="showConfirmation">
+    {{ confirmationMessage }}
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Logs</div>
+      <div class="card-body">
+        <div class="search-container">
+          <input type="text" placeholder="Search" [(ngModel)]="searchTerm" class="form-control" (input)="searchLogs()">
+        </div>
+        <div class="sort-container mt-3">
+          <label for="sortOption" class="form-label">Sort By:</label>
+          <select id="sortOption" [(ngModel)]="sortOption" (change)="sortLogs()" class="form-select">
+            <option value="">None</option>
+            <option value="username">Username</option>
+            <option value="action">Action</option>
+            <option value="date">Date</option>
+          </select>
+        </div>
+        <div class="log-list mt-4">
+          <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>Username</th>
+                <th>Action</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of pagedLogs">
+                <td>{{ log.username }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.date | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-container">
+          <button class="btn btn-sm btn-primary" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+          <button class="btn btn-sm btn-primary" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

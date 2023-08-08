@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">Inbox/Outbox</div>
+      <div class="card-body">
+        <div class="search-container">
+          <input type="text" placeholder="Search" [(ngModel)]="searchTerm" class="form-control" (input)="searchMessages()">
+        </div>
+        <div class="sort-container">
+          <label for="sortOption" class="form-label">Sort By:</label>
+          <select id="sortOption" [(ngModel)]="sortOption" (change)="sortMessages()" class="form-select">
+            <option value="">None</option>
+            <option value="title">Title</option>
+            <option value="date">Date</option>
+          </select>
+        </div>
+        <div class="inbox-messages">
+          <div class="mb-3">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary" [class.active]="inboxActive" (click)="toggleInbox(true)">Inbox</button>
+              <button type="button" class="btn btn-primary" [class.active]="!inboxActive" (click)="toggleInbox(false)">Outbox</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>Title</th>
+                  <th *ngIf="inboxActive">Sender</th>
+                  <th *ngIf="!inboxActive">Receiver</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let message of pagedMessages">
+                  <td>{{ message.title }}</td>
+                  <td *ngIf="inboxActive">{{ message.sender }}</td>
+                  <td *ngIf="!inboxActive">{{ message.receiver }}</td>
+                  <td>{{ message.message }}</td>
+                  <td>{{ message.Date | date: 'dd/MM/yyyy' }}</td>
+                  <td>
+                    <button (click)="delete(message._id)" class="btn btn-sm btn-danger" type="button">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination-container">
+            <button class="btn btn-sm btn-primary" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+            <button class="btn btn-sm btn-primary" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

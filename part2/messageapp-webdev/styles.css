@@ -1,0 +1,77 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: aliceblue;
+}
+
+h1 {
+  text-align: center;
+}
+
+input[type="text"] {
+  display: block;
+  margin: 10px 0;
+  padding: 5px;
+  width: 300px;
+}
+
+button {
+  padding: 8px 15px;
+  font-size: 16px;
+}
+
+select {
+  margin: 10px;
+}
+
+.resultdiv{
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #eee;
+  display: block;
+}
+
+#logout {
+  display: none;
+}
+
+#loggedin{
+  display: none;
+  color:green;
+  font-weight: bold;
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#options {
+  display: none;
+}
+
+h1 {
+  color: red;
+}
+
+#success{
+  color:blue;
+  font-weight: bold;
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.errordiv{
+  color : red;
+  font-weight: bold;
+  font-size: large;
+  font-family: Arial;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10;
+}
